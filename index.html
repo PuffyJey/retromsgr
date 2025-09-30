@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Messenger Retro</title>
+  <style>
+    body {
+      background: #87ceeb;
+      font-family: "Comic Sans MS", cursive, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    #chat-container {
+      background: #fff;
+      border: 3px solid #000;
+      width: 400px;
+      height: 500px;
+      display: flex;
+      flex-direction: column;
+      padding: 10px;
+      border-radius: 10px;
+    }
+    #messages {
+      flex: 1;
+      overflow-y: auto;
+      border: 1px solid #aaa;
+      margin-bottom: 10px;
+      padding: 5px;
+      background: #f0f0f0;
+    }
+    #msgInput {
+      flex: 1;
+      padding: 5px;
+    }
+    button {
+      padding: 5px 10px;
+      margin-left: 5px;
+      background: #0084ff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div id="chat-container">
+    <h2>💬 Messenger Retro</h2>
+    <div id="messages"></div>
+    <input id="msgInput" placeholder="Escribe tu mensaje...">
+    <button onclick="sendMessage()">Enviar</button>
+  </div>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js"></script>
+
+  <script>
+    // ⚠️ Reemplaza con tu configuración de Firebase
+    const firebaseConfig = {
+      apiKey: "TU_API_KEY",
+      authDomain: "TU_PROYECTO.firebaseapp.com",
+      databaseURL: "https://TU_PROYECTO.firebaseio.com",
+      projectId: "TU_PROYECTO",
+      storageBucket: "TU_PROYECTO.appspot.com",
+      messagingSenderId: "123456789",
+      appId: "1:123456789:web:abcdef"
+    };
+
+    // Inicializa Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    const messages = document.getElementById("messages");
+    const input = document.getElementById("msgInput");
+
+    function sendMessage() {
+      if (input.value.trim() !== "") {
+        db.ref("messages").push(input.value);
+        input.value = "";
+      }
+    }
+
+    // Escucha los mensajes en tiempo real
+    db.ref("messages").on("child_added", (snapshot) => {
+      const msg = snapshot.val();
+      const div = document.createElement("div");
+      div.textContent = msg;
+      messages.appendChild(div);
+      messages.scrollTop = messages.scrollHeight;
+    });
+
+    input.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") sendMessage();
+    });
+  </script>
+</body>
+</html>
