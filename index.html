@@ -57,30 +57,27 @@
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js"></script>
 
   <script>
-    // ⚠️ Reemplaza con tu configuración de Firebase
-    const firebaseConfig = {
-      apiKey: "TU_API_KEY",
-      authDomain: "TU_PROYECTO.firebaseapp.com",
-      databaseURL: "https://TU_PROYECTO.firebaseio.com",
-      projectId: "TU_PROYECTO",
-      storageBucket: "TU_PROYECTO.appspot.com",
-      messagingSenderId: "123456789",
-      appId: "1:123456789:web:abcdef"
-    };
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
 
-    // Inicializa Firebase
-    const app = firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyAMyKYo0v4lFjK8UBB9R3nCuT8AYR2R0fc",
+    authDomain: "messanger-backend-954fd.firebaseapp.com",
+    projectId: "messanger-backend-954fd",
+    storageBucket: "messanger-backend-954fd.firebasestorage.app",
+    messagingSenderId: "304421065031",
+    appId: "1:304421065031:web:813289e977be42edbabc62",
+    measurementId: "G-DTCD0KSMK4"
+  };
 
-    const messages = document.getElementById("messages");
-    const input = document.getElementById("msgInput");
-
-    function sendMessage() {
-      if (input.value.trim() !== "") {
-        db.ref("messages").push(input.value);
-        input.value = "";
-      }
-    }
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
 
     // Escucha los mensajes en tiempo real
     db.ref("messages").on("child_added", (snapshot) => {
